@@ -2,9 +2,9 @@
 A show ticket booking application made from python and flask.
 
 #Student details
-Ankit 10616978
-Vibin
-Pawan
+Ankit
+Vibin - 10637649
+Pawan -10641174
 
 ## Features
 
