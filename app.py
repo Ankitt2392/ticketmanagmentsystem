@@ -56,7 +56,32 @@ class Users(db.Model, UserMixin):
             return True
         else:
             return False
-            from flask import Flask
+            
+class Venues(db.Model):
+    venue_id = db.Column(db.Integer(), primary_key = True)
+    venue_name = db.Column(db.String(50), nullable = False)
+    venue_place = db.Column(db.String(50), nullable = False)
+    venue_location = db.Column(db.String(50), nullable = False)
+    venue_capacity = db.Column(db.Integer(), nullable = False)
+    shows = db.relationship("Shows", back_populates="venues", cascade="all, delete")
+
+    def _repr_(self):
+        return "<Venue %r>" % self.venue_id
+
+
+class Shows(db.Model):
+    show_id = db.Column(db.Integer(), primary_key = True)
+    show_name = db.Column(db.String(50), nullable = False)
+    show_time = db.Column(db.String(50), nullable = False)
+    show_tag = db.Column(db.String(50), nullable = False)
+    show_rating = db.Column(db.Integer(), nullable = False)
+    show_price = db.Column(db.Integer(), nullable = False)
+    svenue_id = db.Column(db.Integer(), db.ForeignKey('venues.venue_id', ondelete='CASCADE'))
+    venues = db.relationship("Venues", back_populates="shows")
+    def _repr_(self):
+        return "<Shows %r>" % self.show_id
+            
+            
 
 app = Flask(__name__)
 
