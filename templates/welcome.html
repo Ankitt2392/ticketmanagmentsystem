@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="../static/css/new_venue.css">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr">Ticket Show App</div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('adminlogin')}}">Admin Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">User Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>Welcome to my Ticket Show application !!</h2><br><br><br>
+        <p class="lead" style="max-width: 50%">Thank you for visiting my application.
+            <br><br>
+            As a recent graduate of the MAD 1 course, I am excited to showcase my ticket show application. This project serves as a
+            testament to my skills in web development and my passion for creating dynamic, user-friendly websites.
+            <br>
+            <br>
+            I have invested a significant amount of time and energy into developing this platform and I am confident that you will
+            find it both engaging and useful. Whether you are a seasoned blogger or just starting out, I am sure you will appreciate
+            the ease and functionality of this application. 
+        </p>
+    </div>
+
+    <script>
+        sessionStorage.clear();
+    </script>
+{% endblock %}
