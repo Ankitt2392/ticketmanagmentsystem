@@ -151,6 +151,67 @@ class NewTicketBookingForm(FlaskForm):
     numseats = StringField('Number of Tickets', validators=[DataRequired()])
     price = StringField('Price', validators=[DataRequired()])    
     total = StringField('Total Price', validators=[DataRequired()])
+# USER UPDATE SETTINGS ----------------------------------------------------------
+@app.route("/")
+def index():
+    return render_template("welcome.html", title="Welcome Page")
+
+
+@app.route('/adminlogin', methods =["GET", "POST"])
+def adminlogin():
+    form = AdminLoginForm()
+
+    if form.validate_on_submit():
+        user = Users.query.filter_by(usr_name=form.adminname.data).first()
+        if user and Users.isAdmin(user):
+            if user.password == form.password.data:
+                isAdmin = True
+                login_user(user)
+                return redirect(url_for('admindashboard'))
+            else:
+                flash('Invalid credentials!!')
+                return redirect(url_for('adminlogin'))
+        else:
+            flash('Invalid User!!')
+    return render_template('admin_login.html', title='Admin Login', form=form)
+
+
+@app.route('/login', methods =["GET", "POST"])
+def login():
+    form = UserLoginForm()
+
+    if form.validate_on_submit():
+        user = Users.query.filter_by(usr_name=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                flash("Login Successful!!")
+                return redirect(url_for('userdashboard'))
+            else:
+                flash('Invalid credentials!!')
+                return redirect(url_for('login'))
+        else:
+            flash('User not found!!')
+    return render_template('user_login.html', title='User Login', form=form)
+
+
+@app.route('/registeration', methods =["GET", "POST"])
+def user_registeration():
+    form = UserRegisterationForm()
+
+    if form.validate_on_submit():
+        if form.password.data == form.passwordconf.data:
+            hashed_password = generate_password_hash(form.password.data)
+            user = Users(password=hashed_password, usr_name=form.username.data, usr_phone=form.userphone.data, usr_mail=form.usermail.data, username=form.name.data)
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            flash("Registeratin Successful!!")
+            return redirect(url_for('login'))
+        else:
+            flash("Passwords do not match!!")
+            return redirect(url_for('user_registeration'))
+    return render_template('registeration.html', title='User Registeration', form=form)
 
 app = Flask(__name__)
 
