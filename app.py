@@ -105,7 +105,52 @@ class Ratings(db.Model):
     user_id = db.Column(db.Integer())
     show_name = db.Column(db.String(50), nullable = False)
     venue_name = db.Column(db.String(50), nullable = False)
-    ratings = db.Column(db.Integer(), default = 0)  
+    ratings = db.Column(db.Integer(), default = 0) 
+
+ # Forms--------------------------------------------------------------------------------
+
+class AdminLoginForm(FlaskForm):
+    adminname = StringField('Admin Name', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
+class UserLoginForm(FlaskForm):
+    username = StringField('User Name', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
+class UserRegisterationForm(FlaskForm):
+    username = StringField('User Name', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    passwordconf = PasswordField('Confirm Password', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
+    usermail = StringField('User Mail', validators=[DataRequired()])
+    userphone = StringField('User Phone', validators=[DataRequired()])
+
+
+class NewVenueForm(FlaskForm):
+    venuename = StringField('Venue Name', validators=[DataRequired()])
+    venueplace = StringField('Venue Place', validators=[DataRequired()])
+    venueloc = StringField('Venue Location', validators=[DataRequired()])
+    venuecap = StringField('Venue Capacity', validators=[DataRequired()])
+
+
+class NewShowForm(FlaskForm):
+    showname = StringField('Show Name', validators=[DataRequired()])
+    ratings = StringField('Show Rating', validators=[DataRequired()])
+    starttime = StringField('Show Time', validators=[DataRequired()])
+    tags = StringField('Show Tag', validators=[DataRequired()])
+    price = StringField('Show Price', validators=[DataRequired()])
+    venue = StringField()
+
+
+class NewTicketBookingForm(FlaskForm):
+    buser_id = db.Column(db.Integer(), db.ForeignKey('users.user_id'))
+    bvenue_id = db.Column(db.Integer(), db.ForeignKey('venues.venue_id'))
+    bshow_id = db.Column(db.Integer(), db.ForeignKey('shows.show_id'))
+    numseats = StringField('Number of Tickets', validators=[DataRequired()])
+    price = StringField('Price', validators=[DataRequired()])    
+    total = StringField('Total Price', validators=[DataRequired()])
 
 app = Flask(__name__)
 
