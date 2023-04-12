@@ -274,6 +274,141 @@ def user_registeration():
             return redirect(url_for('user_registeration'))
     return render_template('registeration.html', title='User Registeration', form=form)
 
+@app.route('/userdashboard', methods =["GET", "POST"])
+@login_required
+def userdashboard():
+    form = DataForm()
+    pkey = 0
+    searchkey = ''
+    form_content = request.form.to_dict()
+
+    if request.method == 'POST' and len(form_content)==1:
+        pkey=1
+        searchkey = request.form['searchitem']
+        print(searchkey)
+        fvenuelist = []
+        svenplace = Venues.query.filter(Venues.venue_place.ilike(searchkey+'%')).all()
+        svenloc = Venues.query.filter(Venues.venue_location.ilike(searchkey+'%')).all()
+        svenname = Venues.query.filter(Venues.venue_name.ilike(searchkey+'%')).all()
+        sshotag = Shows.query.filter(Shows.show_tag.ilike(searchkey+'%')).all()
+        sshoname = Shows.query.filter(Shows.show_name.ilike(searchkey+'%')).all()
+
+        # To check for place related shows
+        if svenplace :
+            venplace=[]
+            sven = Venues.query.filter(Venues.venue_place.ilike(searchkey+'%')).all()
+            for ven in sven:
+                shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+                show=[]
+                for sho in shows:
+                    show.append({"name": sho.show_name, "time": sho.show_time})
+                venplace.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity})
+            fvenuelist = venplace
+
+        # To check for location related shows
+        elif svenloc :
+            venloc=[]
+            sven = Venues.query.filter(Venues.venue_location.ilike(searchkey+'%')).all()
+            for ven in sven:
+                shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+                show=[]
+                for sho in shows:
+                    show.append({"name": sho.show_name, "time": sho.show_time})
+                venloc.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity})
+            fvenuelist = venloc
+
+        # To check for venue names related shows
+        elif svenname :
+            venname=[]
+            sven = Venues.query.filter(Venues.venue_name.ilike(searchkey+'%')).all()
+            for ven in sven:
+                shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+                show=[]
+                for sho in shows:
+                    show.append({"name": sho.show_name, "time": sho.show_time})
+                venname.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity})
+            fvenuelist = venname
+
+        # To check for tags related shows
+        elif sshotag :
+            shotag=[]
+            ssho = Shows.query.filter(Shows.show_tag.ilike(searchkey+'%')).all()
+            sven=[]
+            for sho in ssho:
+                veid = Venues.query.filter(Venues.venue_id==sho.svenue_id).first()
+                sven.append(veid)
+            for ven in sven:
+                shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+                show=[]
+                for sho in shows:
+                    show.append({"name": sho.show_name, "time": sho.show_time})
+                shotag.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity})
+            fvenuelist = shotag
+
+        # To check for show name related shows
+        elif sshoname :
+            shoname=[]
+            ssho = Shows.query.filter(Shows.show_name.ilike(searchkey+'%')).all()
+            sven=[]
+            for sho in ssho:
+                veid = Venues.query.filter(Venues.venue_id==sho.svenue_id).first()
+            sven.append(veid)
+            for ven in sven:
+                shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+                show=[]
+                for sho in shows:
+                    show.append({"name": sho.show_name, "time": sho.show_time})
+                shoname.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity})
+            fvenuelist = shoname
+
+        else :
+            venues = Venues.query.all()
+            venu=[]
+            for ven in venues:
+                shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+                show=[]
+                for sho in shows:
+                    show.append({"name": sho.show_name, "time": sho.show_time})
+                venu.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity})
+            fvenuelist = venu
+
+    if pkey == 0:
+        venues = Venues.query.all()
+        venu=[]
+        for ven in venues:
+            shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+            show=[]
+            for sho in shows:
+                show.append({"name": sho.show_name, "time": sho.show_time})
+            venu.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity})
+        fvenuelist = venu
+
+    if form.validate_on_submit():
+        session['venue_name'] = form.booking_venue.data
+        session['show_name'] = form.booking_show.data
+        return redirect(url_for('ticketbooking'))
+
+    return render_template('user_dashboard.html', title='User Dashboard', form=form, data=fvenuelist)
+
+
+@app.route('/admindashboard', methods =["GET", "POST"])
+@login_required
+def admindashboard():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    venues = Venues.query.all()
+    venu=[]
+    for ven in venues:
+        shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+        show=[]
+        for sho in shows:
+            show.append({"name": sho.show_name, "time": sho.show_time, "showid": sho.show_id, "tag": sho.show_tag, "price": sho.show_price, "rating": sho.show_rating})
+        venu.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity, "venueid": ven.venue_id})
+    return render_template('admin_dashboard.html', title='Admin Dashboard', data=venu)
 
 app = Flask(__name__)
 
