@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Registeration</title>
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" type="text/css" href="../static/css/registeration.css">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr"><a style="text-decoration: none; color: white;" href="{{url_for('index')}}">Ticket Show App</a></div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('index')}}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('adminlogin') }}">Admin Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main page__main">
+        <form class="card-form" method="POST" action="/registeration">
+            <div class="card-form__main-content">
+            <h2 class="card-form__title">Registeration</h2>
+            {{ form.hidden_tag() }}
+            {{ form.name.label(class="card-form__label") }}
+            {{ form.name(class="card-form__input", type="text", placeholder="Enter name", id="uname") }}
+            {{ form.username.label(class="card-form__label") }}
+            {{ form.username(class="card-form__input", type="text", placeholder="Enter user name", id="usrname") }}
+            {{ form.usermail.label(class="card-form__label") }}
+            {{ form.usermail(class="card-form__input", type="mail", placeholder="Enter mail", id="usrmail") }}
+            {{ form.userphone.label(class="card-form__label") }}
+            {{ form.userphone(class="card-form__input", type="number", placeholder="Enter phone number", id="usrphone") }}
+            {{ form.password.label(class="card-form__label") }}
+            {{ form.password(class="card-form__input", type="password", placeholder="Enter password", id="userpassword") }}
+            {{ form.passwordconf.label(class="card-form__label") }}
+            {{ form.passwordconf(class="card-form__input", type="password", placeholder="Enter password", id="userpasswordconf") }}
+            </div>
+            <div class="card-form__footer">
+                <button class="primary-btn" type="submit" formmethod="post">Register</button>
+                <button class="primary-btn" type="button" id="loginbutton">Login</button>
+            </div>
+        </form>
+    </main>
+
+    <script type="text/javascript">
+        document.getElementById("loginbutton").onclick = function () {
+            location.href = "{{ url_for('login') }}";
+        }
+    </script>
+{% endblock %}

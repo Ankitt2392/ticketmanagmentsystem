@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="../static/css/rating.css">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr">User Bookings</div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('userdashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('userbookings') }}">Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="rate">
+        <div class="rating"> 
+            <input name="stars" id="e5" type="radio" value="5"></a><label for="e5">☆</label> 
+            <input name="stars" id="e4" type="radio" value="4"></a><label for="e4">☆</label> 
+            <input name="stars" id="e3" type="radio" value="3"></a><label for="e3">☆</label> 
+            <input name="stars" id="e2" type="radio" value="2"></a><label for="e2">☆</label> 
+            <input name="stars" id="e1" type="radio" value="1"></a><label for="e1">☆</label>
+        </div>
+
+        <button type="button" class="ratbutton primary-btn" onclick="displayRadioValue()">Submit</button>
+
+        <main class="main page__main">
+            <form class="card-form", id="rating_form", method="POST" action="/rate">
+                <div class="card-form__main-content">
+                {{ form.hidden_tag() }}
+                {{ form.show(class="card-form__input", type="hidden", id="show") }}
+                {{ form.venue(class="card-form__input", type="hidden", id="venue") }}
+                {{ form.rating(class="card-form__input", type="hidden", id="rating") }}
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="../static/js/rating.js"></script>
+{% endblock %}

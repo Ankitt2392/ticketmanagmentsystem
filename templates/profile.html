@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="../static/css/user_dash.css">
+    <link rel="stylesheet" href="../static/css/new_show.css">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr">User Profile</div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('userdashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('userbookings') }}">Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="background"></div>    
+        <div class="container profilecont text-center">
+            <h1>User Details</h1>
+            <img src="../static/images/usericon.png" class="usericon">
+        </div>
+    </div>
+
+    <main class="main page__main">
+        <form class="card-form" method="POST" action="/profile">
+            <div class="card-form__main-content">
+            {{ form.hidden_tag() }}
+            {{ form.name.label(class="card-form__label") }}
+            {{ form.name(class="card-form__input", type="text", placeholder="Enter name", id="uname", value=data['username']) }}
+            {{ form.username.label(class="card-form__label") }}
+            {{ form.username(class="card-form__input", type="text", placeholder="Enter user name", id="usrname", value=data['usr_name']) }}
+            {{ form.usermail.label(class="card-form__label") }}
+            {{ form.usermail(class="card-form__input", type="mail", placeholder="Enter mail", id="usrmail", value=data['usr_mail']) }}
+            {{ form.userphone.label(class="card-form__label") }}
+            {{ form.userphone(class="card-form__input", type="number", placeholder="Enter phone number", id="usrphone", value=data['usr_phone']) }}
+            <h3 style="text-align: center;">Change Password</h3>
+            {{ form.existingpassword.label(class="card-form__label") }}
+            {{ form.existingpassword(class="card-form__input", type="text", placeholder="Password", id="usrpass") }}
+            {{ form.newuserpassword.label(class="card-form__label") }}
+            {{ form.newuserpassword(class="card-form__input", type="text", placeholder="Password", id="usrpass") }}
+            {{ form.confuserpassword.label(class="card-form__label") }}
+            {{ form.confuserpassword(class="card-form__input", type="text", placeholder="Password", id="usrpass") }}
+            
+            <div class="card-form__footer">
+                <button class="primary-btn" type="submit" formmethod="post">Save</button>
+                <button class="primary-btn deleteusr" type="submit" formaction="/deleteuser" formmethod="post" id="usrdelbutton">Delete User</button>
+            </div>
+        </form>
+    </main>
+{% endblock %}

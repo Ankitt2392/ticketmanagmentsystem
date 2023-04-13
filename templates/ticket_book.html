@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="../static/css/ticket_book.css">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr">User Bookings</div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('userdashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="main page__main">
+        <form class="card-form", method="POST" action="/ticketbooking">
+            <div class="card-form__main-content">
+            <h2 class="card-form__title" id="show_detail">Booking : {{ booking_detail['booking_show'] }} at {{ booking_detail['booking_venue'] }}</h2>
+            <p class="card-form__desc">Please enter the number of tickets and confirm booking.</p>
+            <p class="seat_tot" id="seat_tot">Total number of seats: {{ booking_detail['total_seats'] }}</p>
+            <p class="seat_ava" id="seat_ava">Available Seats: {{ booking_detail['available_seats'] }}</p>
+            <p class="time" id="time"> Timings: {{ booking_detail['show_time'] }}</p>
+            {{ form.hidden_tag() }}
+            {{ form.numseats.label(class="card-form__label") }}
+            {{ form.numseats(class="card-form__input", type="number", max=booking_detail['available_seats'], placeholder="Enter the number of seats", id="num_seats", min="0", onkeyup="tot_price()") }}
+            {{ form.price.label(class="card-form__label") }}
+            {{ form.price(class="card-form__input", type="number", id="price", value=booking_detail['price'], readonly="True") }}
+            {{ form.total.label(class="card-form__label") }}
+            {{ form.total(class="card-form__input", type="number", id="total", value="0", readonly="True") }}
+            </div>
+            <div class="card-form__footer">
+            <button class="primary-btn" type="submit">Confirm Booking</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="../static/js/ticket_book.js"></script>
+{% endblock %}
