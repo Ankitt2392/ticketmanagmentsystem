@@ -1,7 +1,7 @@
 # ticketshow_mad1
 A show ticket booking application made from python and flask.
 
-#Student details
+# Student details ------------------
 Ankit - 10616978
 Vibin - 10637649
 Pawan - 10641174
