@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="../static/css/new_show.css">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr">Admin Dashboard</div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('summary') }}">Summary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="main page__main">
+        <form class="card-form" method="POST" action="/updateshow">
+            <div class="card-form__main-content">
+            <h2 class="card-form__title">Update the Show details</h2>
+            {{ form.hidden_tag() }}
+            {{ form.showname.label(class="card-form__label") }}
+            {{ form.showname(class="card-form__input", type="text", placeholder="Enter the Show name", id="show_name") }}
+            {{ form.ratings.label(class="card-form__label") }}
+            {{ form.ratings(class="card-form__input", type="number", placeholder="Enter ratings out of 5", id="show_rat", min="0", max="5") }}
+            {{ form.starttime.label(class="card-form__label") }}
+            {{ form.starttime(class="card-form__input", type="time", placeholder="Enter the show time", id="show_time_start") }}
+            {{ form.tags.label(class="card-form__label") }}
+            {{ form.tags(class="card-form__input", type="text", placeholder="Enter tags", id="show_tag") }}
+            {{ form.price.label(class="card-form__label") }}
+            {{ form.price(class="card-form__input", type="number", placeholder="Enter value", id="price", min="100") }}
+            {{ form.showid(class="card-form__input", type="hidden", placeholder="Show id", id="show_id") }}
+            </div>
+            <div class="card-form__footer">
+            <button class="primary-btn" type="submit" formmethod="post">Save</button>
+            <button class="primary-btn deleteshow" type="submit" formaction="/deleteshow" formmethod="post" id="shodelbutton" onclick="showdelete()">Delete Show</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="../static/js/updateshow.js"></script>
+{% endblock %}

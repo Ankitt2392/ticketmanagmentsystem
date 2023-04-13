@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="../static/css/new_venue.css">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr">Admin Dashboard</div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('summary') }}">Summary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="main page__main">
+        <form class="card-form" method="POST" action="/updatevenue">
+            <div class="card-form__main-content">
+            <h2 class="card-form__title">Updating the Venue</h2>
+            {{ form.hidden_tag() }}
+            {{ form.venuename.label(class="card-form__label") }}
+            {{ form.venuename(class="card-form__input", type="text", placeholder="Enter the Venue name", id="venue_name") }}
+            {{ form.venueplace.label(class="card-form__label") }}
+            {{ form.venueplace(class="card-form__input", type="text", placeholder="Enter the Venue place", id="venue_place") }}
+            {{ form.venueloc.label(class="card-form__label") }}
+            {{ form.venueloc(class="card-form__input", type="text", placeholder="Enter the Venue location", id="venue_loc") }}
+            {{ form.venuecap.label(class="card-form__label") }}
+            {{ form.venuecap(class="card-form__input", type="number", placeholder="Enter the maximum capacity", id="venue_cap") }}
+            {{ form.venueid(class="card-form__input", type="hidden", placeholder="Venue id", id="venue_id") }}
+            </div>
+            <div class="card-form__footer">
+            <button class="primary-btn" type="submit" formmethod="post">Save</button>
+            <button class="primary-btn deleteshow" type="submit" formaction="/deletevenue" formmethod="post" id="vendelbutton" onclick="venuedelete()">Delete Venue</button>
+            </div>
+        </form>
+    </main>
+    
+    <script src="../static/js/updatevenue.js"></script>
+
+{% endblock %}

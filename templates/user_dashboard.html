@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="../static/css/user_dash.css">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr"><a href="{{ url_for('userdashboard') }}">User Bookings</a></div>
+            
+            <form class="form-inline my-2 my-lg-0 inpform" method="POST" action="/userdashboard">
+                <input class="form-control mr-sm-2" type="search" name="searchitem" placeholder="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0 searchbut" type="submit">Search</button>
+            </form>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('userbookings') }}">Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="venues" id="venues-container"></div>
+
+    <main class="main page__main">
+        <form class="card-form", id="booking_form", method="POST" action="/userdashboard">
+            <div class="card-form__main-content">
+            {{ form.hidden_tag() }}
+            {{ form.booking_show(class="card-form__input", type="hidden", id="booking_show", value="Banana") }}
+            {{ form.booking_venue(class="card-form__input", type="hidden", id="booking_venue", value="Apple") }}
+            </div>
+        </form>
+    </main>
+
+    <script>
+        var data = {{ data|tojson }}
+    </script>
+
+    <script src="../static/js/userdash.js"></script>
+{% endblock %}
