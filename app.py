@@ -189,7 +189,9 @@ class RatingForm(FlaskForm):
     venue = StringField()
     show = StringField()
     rating = StringField()
+    
 #USER UPDATE SETTINGS ----------------------------------------------------------
+
 @app.route("/")
 def index():
     return render_template("welcome.html", title="Welcome Page")
@@ -250,6 +252,7 @@ def user_registeration():
             flash("Passwords do not match!!")
             return redirect(url_for('user_registeration'))
     return render_template('registeration.html', title='User Registeration', form=form)
+
 @app.route('/userdashboard', methods =["GET", "POST"])
 @login_required
 def userdashboard():
@@ -385,6 +388,76 @@ def admindashboard():
             show.append({"name": sho.show_name, "time": sho.show_time, "showid": sho.show_id, "tag": sho.show_tag, "price": sho.show_price, "rating": sho.show_rating})
         venu.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity, "venueid": ven.venue_id})
     return render_template('admin_dashboard.html', title='Admin Dashboard', data=venu)
+
+@app.route('/profile', methods =["GET", "POST"])
+@login_required
+def profile():
+    usrdet = Users.query.filter_by(user_id=current_user.user_id).first()
+    details = {"usr_name":usrdet.usr_name, "usr_phone":usrdet.usr_phone, "usr_mail":usrdet.usr_mail, "username":usrdet.username, "password":usrdet.password}
+    
+    form = UserUpdateForm()
+    if form.validate_on_submit():
+        if check_password_hash(usrdet.password, form.existingpassword.data):
+            if form.newuserpassword.data == form.confuserpassword.data:
+                hashed_password = generate_password_hash(form.newuserpassword.data)
+                user = Users(password=hashed_password, usr_name=form.username.data, usr_phone=form.userphone.data, usr_mail=form.usermail.data, username=form.name.data)
+                db.session.add(user)
+                db.session.commit()
+                login_user(user)
+                flash("Successfully Changed Data!!")
+                return redirect(url_for('userdashboard'))
+            else:
+                flash("Enter the same password!!")
+                return redirect(url_for('profile'))
+        else:
+            flash("Enter the correct password!!")
+            return redirect(url_for('profile'))
+
+    return render_template('profile.html', title='Profile', form=form, data=details)
+
+
+@app.route('/ticketbooking', methods =["GET", "POST"])
+@login_required
+def ticketbooking():
+    try:
+        form = NewTicketBookingForm()
+        booking_venue = session['venue_name']
+        booking_show = session['show_name']
+
+        if form.validate_on_submit():
+            show_id = (Shows.query.filter_by(show_name = booking_show).first_or_404()).show_id
+            venue_id = (Venues.query.filter_by(venue_name = booking_venue).first_or_404()).venue_id
+            booking = Bookings(num_tickets=form.numseats.data, bvenue_id=venue_id, bshow_id=show_id, total_price=form.total.data, buser_id=current_user.user_id)
+            db.session.add(booking)
+            
+            #Variable to keep track of number of bookings
+            booked_count = len(Booked.query.all())+1
+            booked = Booked(show_name=booking_show, venue_name=booking_venue, seats_booked=form.numseats.data, booked_id=booked_count)
+            db.session.add(booked)
+            
+            db.session.commit()
+            flash("Booking confirmed!!")
+            return redirect(url_for('userdashboard'))
+        
+        show_time = (Shows.query.filter_by(show_name = booking_show).first_or_404()).show_time
+        total_seats = (Venues.query.filter_by(venue_name = booking_venue).first_or_404()).venue_capacity
+        show_price = (Shows.query.filter_by(show_name = booking_show).first_or_404()).show_price
+
+
+        booked_seats = Booked.query.filter_by(show_name = booking_show).first()
+        if (booked_seats == None):
+            booked_seats = 0
+        else:
+            booked_seats = booked_seats.seats_booked
+        available_seats = total_seats - booked_seats
+
+        booking_detail = {'booking_venue':booking_venue, 'booking_show':booking_show, 'show_time':show_time, 'total_seats':total_seats, 'available_seats':available_seats, 'price':show_price}
+        return render_template('ticket_book.html', title='Ticket Booking', form=form, booking_detail=booking_detail)
+    except Exception as e:
+        # For Debugging purposes
+        print(e)
+        flash('Something went wrong!!')
+        return redirect(url_for('userdashboard'))    
  
 app = Flask(__name__)
 
