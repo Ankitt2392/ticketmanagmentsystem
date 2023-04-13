@@ -151,7 +151,45 @@ class NewTicketBookingForm(FlaskForm):
     numseats = StringField('Number of Tickets', validators=[DataRequired()])
     price = StringField('Price', validators=[DataRequired()])    
     total = StringField('Total Price', validators=[DataRequired()])
-# USER UPDATE SETTINGS ----------------------------------------------------------
+
+class UpdateShowForm(FlaskForm):
+    showname = StringField('Show Name', validators=[DataRequired()])
+    ratings = StringField('Show Rating', validators=[DataRequired()])
+    starttime = StringField('Show Time', validators=[DataRequired()])
+    tags = StringField('Show Tag', validators=[DataRequired()])
+    price = StringField('Show Price', validators=[DataRequired()])
+    showid = StringField()
+
+
+class UpdateVenueForm(FlaskForm):
+    venuename = StringField('Venue Name', validators=[DataRequired()])
+    venueplace = StringField('Venue Place', validators=[DataRequired()])
+    venueloc = StringField('Venue Location', validators=[DataRequired()])
+    venuecap = StringField('Venue Capacity', validators=[DataRequired()])
+    venueid = StringField()
+
+
+class DataForm(FlaskForm):
+    booking_show = StringField()
+    booking_venue = StringField()
+    search_items = StringField()
+
+
+class UserUpdateForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    username = StringField('User Name', validators=[DataRequired()])
+    usermail = StringField('User Mail', validators=[DataRequired()])
+    userphone = StringField('Phone Number', validators=[DataRequired()])
+    existingpassword = StringField('Existing Password', validators=[DataRequired()])
+    newuserpassword = StringField('New Password')
+    confuserpassword = StringField('Confirm New Password')
+
+
+class RatingForm(FlaskForm):
+    venue = StringField()
+    show = StringField()
+    rating = StringField()
+#USER UPDATE SETTINGS ----------------------------------------------------------
 @app.route("/")
 def index():
     return render_template("welcome.html", title="Welcome Page")
@@ -212,68 +250,6 @@ def user_registeration():
             flash("Passwords do not match!!")
             return redirect(url_for('user_registeration'))
     return render_template('registeration.html', title='User Registeration', form=form)
-#Added services for user registration, user login and admin login.
-@app.route("/")
-def index():
-    return render_template("welcome.html", title="Welcome Page")
-
-
-@app.route('/adminlogin', methods =["GET", "POST"])
-def adminlogin():
-    form = AdminLoginForm()
-
-    if form.validate_on_submit():
-        user = Users.query.filter_by(usr_name=form.adminname.data).first()
-        if user and Users.isAdmin(user):
-            if user.password == form.password.data:
-                isAdmin = True
-                login_user(user)
-                return redirect(url_for('admindashboard'))
-            else:
-                flash('Invalid credentials!!')
-                return redirect(url_for('adminlogin'))
-        else:
-            flash('Invalid User!!')
-    return render_template('admin_login.html', title='Admin Login', form=form)
-
-
-@app.route('/login', methods =["GET", "POST"])
-def login():
-    form = UserLoginForm()
-
-    if form.validate_on_submit():
-        user = Users.query.filter_by(usr_name=form.username.data).first()
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user)
-                flash("Login Successful!!")
-                return redirect(url_for('userdashboard'))
-            else:
-                flash('Invalid credentials!!')
-                return redirect(url_for('login'))
-        else:
-            flash('User not found!!')
-    return render_template('user_login.html', title='User Login', form=form)
-
-
-@app.route('/registeration', methods =["GET", "POST"])
-def user_registeration():
-    form = UserRegisterationForm()
-
-    if form.validate_on_submit():
-        if form.password.data == form.passwordconf.data:
-            hashed_password = generate_password_hash(form.password.data)
-            user = Users(password=hashed_password, usr_name=form.username.data, usr_phone=form.userphone.data, usr_mail=form.usermail.data, username=form.name.data)
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
-            flash("Registeratin Successful!!")
-            return redirect(url_for('login'))
-        else:
-            flash("Passwords do not match!!")
-            return redirect(url_for('user_registeration'))
-    return render_template('registeration.html', title='User Registeration', form=form)
-
 @app.route('/userdashboard', methods =["GET", "POST"])
 @login_required
 def userdashboard():
@@ -409,7 +385,7 @@ def admindashboard():
             show.append({"name": sho.show_name, "time": sho.show_time, "showid": sho.show_id, "tag": sho.show_tag, "price": sho.show_price, "rating": sho.show_rating})
         venu.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity, "venueid": ven.venue_id})
     return render_template('admin_dashboard.html', title='Admin Dashboard', data=venu)
-
+ 
 app = Flask(__name__)
 
 @app.route("/")
