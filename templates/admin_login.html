@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" type="text/css" href="../static/css/admin_login.css">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="usr"><a style="text-decoration: none; color: white;" href="{{url_for('index')}}">Ticket Show App</a></div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('index')}}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">User Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main page__main">
+        <form class="card-form" method="POST" action="/adminlogin">
+            <div class="card-form__main-content">
+            <h2 class="card-form__title">Admin Login</h2>
+            {{ form.hidden_tag() }}
+            {{ form.adminname.label(class="card-form__label") }}
+            {{ form.adminname(class="card-form__input", type="text", placeholder="Enter admin name", id="adminname") }}
+            {{ form.password.label(class="card-form__label") }}
+            {{ form.password(class="card-form__input", type="password", placeholder="Enter password", id="password") }}
+            </div>
+            <div class="card-form__footer">
+                <button class="primary-btn" type="submit" formmethod="post">Login</button>
+            </div>
+        </form>
+    </main>
+{% endblock %}
