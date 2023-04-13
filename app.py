@@ -457,7 +457,60 @@ def ticketbooking():
         # For Debugging purposes
         print(e)
         flash('Something went wrong!!')
-        return redirect(url_for('userdashboard'))    
+        return redirect(url_for('userdashboard'))   
+
+@app.route('/userbookings', methods =["GET", "POST"])
+@login_required
+def userbookings():
+    bookings = Bookings.query.filter(Bookings.buser_id==current_user.user_id)
+    data = []
+    for book in bookings:
+
+        ven = Venues.query.filter(book.bvenue_id==Venues.venue_id).first()
+        sho = Shows.query.filter(book.bshow_id==Shows.show_id).first()
+        data.append({"venue":ven.venue_name, "show":sho.show_name})
+    return render_template('user_bookings.html', title='User Bookings', data=data)
+
+
+@app.route('/newshow', methods =["GET", "POST"])
+@login_required
+def new_show():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = NewShowForm()
+
+    if form.validate_on_submit():
+        venue_id = int(form.venue.data[-1])
+        show = Shows(show_name=form.showname.data, show_time=form.starttime.data, show_tag=form.tags.data, show_rating=form.ratings.data, show_price=form.price.data, svenue_id=venue_id)
+        db.session.add(show)
+        db.session.commit()
+        flash('Show Created Successfully!!')
+        return redirect(url_for('admindashboard'))
+    return render_template('new_show.html', title='New Show', form=form)
+
+
+@app.route('/newvenue', methods =["GET", "POST"])
+@login_required
+def new_venue():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = NewVenueForm()
+
+    if form.validate_on_submit():
+        venue = Venues(venue_name=form.venuename.data, venue_place=form.venueplace.data, venue_location=form.venueloc.data, venue_capacity=form.venuecap.data)
+        db.session.add(venue)
+        db.session.commit()
+        flash('Venue Created Successfully!!')
+        return redirect(url_for('admindashboard'))
+    return render_template('new_venue.html', title='New Venue', form=form)         
  
 app = Flask(__name__)
 
