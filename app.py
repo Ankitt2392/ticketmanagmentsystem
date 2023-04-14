@@ -510,7 +510,122 @@ def new_venue():
         db.session.commit()
         flash('Venue Created Successfully!!')
         return redirect(url_for('admindashboard'))
-    return render_template('new_venue.html', title='New Venue', form=form)         
+    return render_template('new_venue.html', title='New Venue', form=form) 
+
+    @app.route('/updateshow', methods =["GET", "POST"])
+@login_required
+def updateshow():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = UpdateShowForm()
+
+    if form.validate_on_submit():
+        sh_id = form.showid.data
+        show = Shows.query.filter(Shows.show_id==sh_id).first()
+        show.show_name=form.showname.data
+        show.show_time=form.starttime.data
+        show.show_tag=form.tags.data
+        show.show_rating=form.ratings.data
+        show.show_price=form.price.data
+        db.session.commit()
+        return redirect(url_for('admindashboard'))
+    return render_template('update_show.html', title='Update Show', form=form)
+
+
+@app.route('/updatevenue', methods =["GET", "POST"])
+@login_required
+def updatevenue():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = UpdateVenueForm()
+    
+    if form.validate_on_submit():
+        ven_id = form.venueid.data
+        venue = Venues.query.filter(Venues.venue_id==ven_id).first()
+        venue.venue_name=form.venuename.data
+        venue.venue_place=form.venueplace.data
+        venue.venue_location=form.venueloc.data
+        venue.venue_capacity=form.venuecap.data
+        db.session.commit()
+        return redirect(url_for('admindashboard'))
+    return render_template('update_venue.html', title='Update Venue', form=form)
+
+
+@app.route('/updateshow', methods =["GET", "POST"])
+@login_required
+def updateshow():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = UpdateShowForm()
+
+    if form.validate_on_submit():
+        sh_id = form.showid.data
+        show = Shows.query.filter(Shows.show_id==sh_id).first()
+        show.show_name=form.showname.data
+        show.show_time=form.starttime.data
+        show.show_tag=form.tags.data
+        show.show_rating=form.ratings.data
+        show.show_price=form.price.data
+        db.session.commit()
+        return redirect(url_for('admindashboard'))
+    return render_template('update_show.html', title='Update Show', form=form)
+
+@app.route('/updatevenue', methods =["GET", "POST"])
+@login_required
+def updatevenue():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = UpdateVenueForm()
+    
+    if form.validate_on_submit():
+        ven_id = form.venueid.data
+        venue = Venues.query.filter(Venues.venue_id==ven_id).first()
+        venue.venue_name=form.venuename.data
+        venue.venue_place=form.venueplace.data
+        venue.venue_location=form.venueloc.data
+        venue.venue_capacity=form.venuecap.data
+        db.session.commit()
+        return redirect(url_for('admindashboard'))
+    return render_template('update_venue.html', title='Update Venue', form=form)
+
+
+@app.route('/summary', methods =["GET", "POST"])
+@login_required
+def summary():
+    venues = Venues.query.all()
+    venu=[]
+    for ven in venues:
+        shows = Shows.query.filter(ven.venue_id==Shows.svenue_id).all()
+        show=[]
+        for sho in shows:
+            rat = Ratings.query.filter_by(show_name=sho.show_name).all()
+            avg_rating = 0.0
+            count_rating = len(rat)
+            if count_rating > 0:
+                for r in rat:
+                    avg_rating += r.ratings
+                avg_rating = avg_rating/count_rating
+            else:
+                avg_rating = 0
+            show.append({"name": sho.show_name, "showid": sho.show_id, "rating": avg_rating})
+        venu.append({"name": ven.venue_name, "cards": show, "venueid": ven.venue_id})
+    return render_template('summary.html', title='Summary', data=venu)
  
 app = Flask(__name__)
 
