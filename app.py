@@ -626,6 +626,64 @@ def summary():
             show.append({"name": sho.show_name, "showid": sho.show_id, "rating": avg_rating})
         venu.append({"name": ven.venue_name, "cards": show, "venueid": ven.venue_id})
     return render_template('summary.html', title='Summary', data=venu)
+
+@app.route('/rate', methods =["GET", "POST"])
+@login_required
+def rating():
+    form = RatingForm()
+
+    if form.validate_on_submit():
+        venue = form.venue.data
+        show = form.show.data
+        rating_value = form.rating.data
+        userid = current_user.user_id
+        rating_count = len(Ratings.query.all())+1
+        rating = Ratings(ratings_id=rating_count, user_id=userid, show_name=show, venue_name=venue, ratings=rating_value)
+        db.session.add(rating)
+        db.session.commit()
+        flash("Your rating has been saved")
+        return redirect(url_for('userdashboard'))
+
+    return render_template('rating.html', title='Ratings', form=form)
+
+
+@app.route('/deleteshow', methods =["GET", "POST"])
+@login_required
+def deleteshow():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = UpdateShowForm()
+    sh_id = form.showid.data
+    show = Shows.query.filter(Shows.show_id==sh_id).first()
+    db.session.delete(show)
+    db.session.commit()
+    flash('Deleted Successfully!!')
+    print("successfully deleted")
+    return redirect(url_for('admindashboard'))
+
+
+@app.route('/deletevenue', methods =["GET", "POST"])
+@login_required
+def deletevenue():
+    user = Users.query.filter_by(user_id = current_user.user_id).first()
+    if not user.isAdmin():
+        flash("You do not have sufficient access rights for this page!!")
+        logout_clear()
+        return redirect(url_for('index'))
+    
+    form = UpdateVenueForm()
+    ve_id = form.venueid.data
+    # print(form.venueid.data)
+    venue = Venues.query.filter(Venues.venue_id==ve_id).first()
+    db.session.delete(venue)
+    db.session.commit()
+    flash('Deleted Successfully!')
+    print("successfully deleted")
+    return redirect(url_for('admindashboard'))
  
 app = Flask(__name__)
 
