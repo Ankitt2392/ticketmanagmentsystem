@@ -684,6 +684,39 @@ def deletevenue():
     flash('Deleted Successfully!')
     print("successfully deleted")
     return redirect(url_for('admindashboard'))
+
+@app.route('/deleteuser', methods =["GET", "POST"])
+@login_required
+def deleteuser():    
+    us_id = current_user.user_id
+    cur_user = Users.query.filter(Users.user_id==us_id).first()
+    db.session.delete(cur_user)
+    db.session.commit()
+    flash('User Deleted Successfully!!')
+    print("successfully deleted")
+    return redirect(url_for('login'))
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_clear()
+    flash("Logout Successful!!")
+    return redirect(url_for('index'))
+
+
+def logout_clear():
+    session.clear()
+    logout_user()
+
+# ------------------------------------------------------------------------------
+
+if _name_ == '_main_':
+    with app.app_context():
+        db.create_all()
+        app.run(debug=True, port=8000)
+
+# ------------------------------------------------------------------------------    
  
 app = Flask(__name__)
 
