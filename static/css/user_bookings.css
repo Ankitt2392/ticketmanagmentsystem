@@ -1,0 +1,95 @@
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.usr{
+    color: #ffffff;
+    font-size: x-large;
+}
+
+button{
+    width: 15%;
+    background-color: #ffffff;
+    color: #202020;
+    padding: 15px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: auto;
+}
+button:hover{
+    background-color: #202020;
+    color: #ffffff;
+}
+
+.venues {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    /* position: relative; */
+}
+  
+.vcard {
+    width: 90%;
+    background-color: rgba(255,255,255,0.13);
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 25px rgba(8,7,16,0.6);
+    padding: 25px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.vcard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 
+.rate {
+    float: left;
+    height: 80px;
+    padding: 0 10px;
+    padding: 15px 0;
+    top: 5rem;
+    right: 7rem;
+    position: absolute;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+ */

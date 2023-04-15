@@ -1,0 +1,58 @@
+body {
+  background: #FDFDFD;
+  text-align:center;
+}
+
+.rating {
+  width: 1050px;
+  font-size: 45px;
+  overflow:hidden;
+}
+
+.rating input {
+  float: right;
+  opacity: 0;
+  position: absolute;
+}
+
+.rating a,
+.rating label {
+  float:right;
+  color: #aaa;
+  width: auto;
+  text-decoration: none;
+  -webkit-transition: color .4s;
+  -moz-transition: color .4s;
+  -o-transition: color .4s;
+  transition: color .4s;
+}
+
+.rating label:hover ~ label,
+.rating input:focus ~ label,
+.rating label:hover,
+.rating a:hover,
+.rating a:hover ~ a,
+.rating a:focus,
+.rating a:focus ~ a	{
+  color: orange;
+  cursor: pointer;
+}
+
+.usr{
+  color: #ffffff;
+  font-size: x-large;
+}
+
+.primary-btn {
+  color: white;
+  background-color: #002757;
+  padding: 0.7em 1em;
+  border: 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  color: #002757;
+  background-color: white;
+}
