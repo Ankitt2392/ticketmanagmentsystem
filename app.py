@@ -11,7 +11,7 @@ import json
 
 # --------------------------------------------------------------------------------------
 
-app = Flask(_name_, template_folder='templates')
+app = Flask(__name__, template_folder='templates')
 app.secret_key = 'super secret key'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ticket_show.db'
@@ -48,7 +48,7 @@ class Users(db.Model, UserMixin):
     def get_id(self):
            return (self.user_id)
 
-    def _repr_(self):
+    def __repr__(self):
         return "<User %r>" % self.user_id
 
     def isAdmin(self): 
@@ -56,7 +56,8 @@ class Users(db.Model, UserMixin):
             return True
         else:
             return False
-            
+
+
 class Venues(db.Model):
     venue_id = db.Column(db.Integer(), primary_key = True)
     venue_name = db.Column(db.String(50), nullable = False)
@@ -65,7 +66,7 @@ class Venues(db.Model):
     venue_capacity = db.Column(db.Integer(), nullable = False)
     shows = db.relationship("Shows", back_populates="venues", cascade="all, delete")
 
-    def _repr_(self):
+    def __repr__(self):
         return "<Venue %r>" % self.venue_id
 
 
@@ -78,9 +79,10 @@ class Shows(db.Model):
     show_price = db.Column(db.Integer(), nullable = False)
     svenue_id = db.Column(db.Integer(), db.ForeignKey('venues.venue_id', ondelete='CASCADE'))
     venues = db.relationship("Venues", back_populates="shows")
-    def _repr_(self):
+    def __repr__(self):
         return "<Shows %r>" % self.show_id
-            
+
+
 class Bookings(db.Model):
     booking_id = db.Column(db.Integer(), primary_key = True)
     buser_id = db.Column(db.Integer(), db.ForeignKey('users.user_id', ondelete="CASCADE"))
@@ -89,7 +91,7 @@ class Bookings(db.Model):
     num_tickets = db.Column(db.Integer(), nullable = False)
     total_price = db.Column(db.Integer(), nullable = False)
 
-    def _repr_(self):
+    def __repr__(self):
         return "<Bookings %r%r%r>" % self.venue_id % self.show_id % self.booking_id
 
 
@@ -105,9 +107,10 @@ class Ratings(db.Model):
     user_id = db.Column(db.Integer())
     show_name = db.Column(db.String(50), nullable = False)
     venue_name = db.Column(db.String(50), nullable = False)
-    ratings = db.Column(db.Integer(), default = 0) 
+    ratings = db.Column(db.Integer(), default = 0)
+    
 
- # Forms--------------------------------------------------------------------------------
+# Forms--------------------------------------------------------------------------------
 
 class AdminLoginForm(FlaskForm):
     adminname = StringField('Admin Name', validators=[DataRequired()])
@@ -152,6 +155,7 @@ class NewTicketBookingForm(FlaskForm):
     price = StringField('Price', validators=[DataRequired()])    
     total = StringField('Total Price', validators=[DataRequired()])
 
+
 class UpdateShowForm(FlaskForm):
     showname = StringField('Show Name', validators=[DataRequired()])
     ratings = StringField('Show Rating', validators=[DataRequired()])
@@ -189,8 +193,17 @@ class RatingForm(FlaskForm):
     venue = StringField()
     show = StringField()
     rating = StringField()
-    
-#USER UPDATE SETTINGS ----------------------------------------------------------
+
+# Admin creation -----------------------------------------------------------------------------
+
+# if not (Users.query.filter_by(roles='admin').first()):
+# print("New Admin created")
+# user = Users(password=generate_password_hash("admin123"), usr_name="admin", usr_phone=9876543210, usr_mail="admin@gmail.com", username="Admin")
+# db.session.add(user)
+# db.session.commit()
+# login_user(user)
+
+# Routes-------------------------------------------------------------------------------------
 
 @app.route("/")
 def index():
@@ -252,6 +265,7 @@ def user_registeration():
             flash("Passwords do not match!!")
             return redirect(url_for('user_registeration'))
     return render_template('registeration.html', title='User Registeration', form=form)
+
 
 @app.route('/userdashboard', methods =["GET", "POST"])
 @login_required
@@ -389,6 +403,7 @@ def admindashboard():
         venu.append({"name": ven.venue_name, "cards": show, "place": ven.venue_place, "location": ven.venue_location, "capacity": ven.venue_capacity, "venueid": ven.venue_id})
     return render_template('admin_dashboard.html', title='Admin Dashboard', data=venu)
 
+
 @app.route('/profile', methods =["GET", "POST"])
 @login_required
 def profile():
@@ -457,7 +472,8 @@ def ticketbooking():
         # For Debugging purposes
         print(e)
         flash('Something went wrong!!')
-        return redirect(url_for('userdashboard'))   
+        return redirect(url_for('userdashboard'))
+
 
 @app.route('/userbookings', methods =["GET", "POST"])
 @login_required
@@ -510,53 +526,7 @@ def new_venue():
         db.session.commit()
         flash('Venue Created Successfully!!')
         return redirect(url_for('admindashboard'))
-    return render_template('new_venue.html', title='New Venue', form=form) 
-
-    @app.route('/updateshow', methods =["GET", "POST"])
-@login_required
-def updateshow():
-    user = Users.query.filter_by(user_id = current_user.user_id).first()
-    if not user.isAdmin():
-        flash("You do not have sufficient access rights for this page!!")
-        logout_clear()
-        return redirect(url_for('index'))
-    
-    form = UpdateShowForm()
-
-    if form.validate_on_submit():
-        sh_id = form.showid.data
-        show = Shows.query.filter(Shows.show_id==sh_id).first()
-        show.show_name=form.showname.data
-        show.show_time=form.starttime.data
-        show.show_tag=form.tags.data
-        show.show_rating=form.ratings.data
-        show.show_price=form.price.data
-        db.session.commit()
-        return redirect(url_for('admindashboard'))
-    return render_template('update_show.html', title='Update Show', form=form)
-
-
-@app.route('/updatevenue', methods =["GET", "POST"])
-@login_required
-def updatevenue():
-    user = Users.query.filter_by(user_id = current_user.user_id).first()
-    if not user.isAdmin():
-        flash("You do not have sufficient access rights for this page!!")
-        logout_clear()
-        return redirect(url_for('index'))
-    
-    form = UpdateVenueForm()
-    
-    if form.validate_on_submit():
-        ven_id = form.venueid.data
-        venue = Venues.query.filter(Venues.venue_id==ven_id).first()
-        venue.venue_name=form.venuename.data
-        venue.venue_place=form.venueplace.data
-        venue.venue_location=form.venueloc.data
-        venue.venue_capacity=form.venuecap.data
-        db.session.commit()
-        return redirect(url_for('admindashboard'))
-    return render_template('update_venue.html', title='Update Venue', form=form)
+    return render_template('new_venue.html', title='New Venue', form=form)
 
 
 @app.route('/updateshow', methods =["GET", "POST"])
@@ -581,6 +551,7 @@ def updateshow():
         db.session.commit()
         return redirect(url_for('admindashboard'))
     return render_template('update_show.html', title='Update Show', form=form)
+
 
 @app.route('/updatevenue', methods =["GET", "POST"])
 @login_required
@@ -626,6 +597,7 @@ def summary():
             show.append({"name": sho.show_name, "showid": sho.show_id, "rating": avg_rating})
         venu.append({"name": ven.venue_name, "cards": show, "venueid": ven.venue_id})
     return render_template('summary.html', title='Summary', data=venu)
+
 
 @app.route('/rate', methods =["GET", "POST"])
 @login_required
@@ -685,6 +657,7 @@ def deletevenue():
     print("successfully deleted")
     return redirect(url_for('admindashboard'))
 
+
 @app.route('/deleteuser', methods =["GET", "POST"])
 @login_required
 def deleteuser():    
@@ -711,18 +684,9 @@ def logout_clear():
 
 # ------------------------------------------------------------------------------
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         app.run(debug=True, port=8000)
 
-# ------------------------------------------------------------------------------    
- 
-app = Flask(__name__)
-
-@app.route("/")
-def hello():
-    return "Hello, World!"
-
-if __name__ == "__main__":
-    app.run()
+# ------------------------------------------------------------------------------
