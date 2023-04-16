@@ -1,0 +1,32 @@
+Name : Pavan Vemula
+Studen Id : 10641174
+
+Individual Contributions:
+I wanted to take a moment to underline the value of individual contributions as we collaborate on our Python project. 
+
+Installed the Vscode for python code update.
+1.	Project files are available in the below location. 
+C:\Users\cextest\OneDrive\Desktop\Python_CA\ticketmanagmentsystem
+2.	Updated all the Information about the project in readme.md file.
+3.	Used flask to update python code.
+4.	Created Html pages using CSS style sheet.
+5.	Committed all the python code form the Vscode to git repository.
+6.	Worked on login view added about venue.
+7.	Added form model to update shows, venues, user and update ratings.
+8.	Added views for admin dashboard, show, venue and admin login pages, added rate route, delete show and delete venue functionality.
+9.	And worked on SQLite dB file. 
+10.	Changes in App.py file (every time updating the code)
+Issues faced in group assignment:
+     1. We faced the merge conflicts and fixed that issue with merge.
+  The below Template pages are Added.
+    1. User Login
+    2.Admin_dashboard
+    3.Admin_login
+    4.base
+    5.New_show
+    6.New_venue
+created a Git account and created a work environment with all the dependencies to write a python code.
+Used below commands to take git clone and user access  
+git clone https://github.com/Ankitt2392/ticketmanagmentsystem
+git config --global user.name "Pavanvemula1996"
+       git config --global user.email 10641174@mydbs.ie
