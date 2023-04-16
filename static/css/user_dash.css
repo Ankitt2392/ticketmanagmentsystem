@@ -1,0 +1,203 @@
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.usr{
+    color: #ffffff;
+    font-size: x-large;
+}
+/* .venues{
+    height: 40%;
+    width: 80%;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 25px rgba(8,7,16,0.6);
+    padding: 25px 40px 0px;
+    top: 400px;
+}
+.shows{
+    height: 50%;
+    width: 25%;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 25px rgba(8,7,16,0.6);
+    padding: 25px 40px 0px;
+    left: 18%;
+    top: 60%;
+}
+
+#book_button{
+    margin-top: 50px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #202020;
+    padding: 15px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#book_button:hover{
+    background-color: #202020;
+    color: #ffffff;
+} */
+
+.bookings_button{
+    margin-top: 25px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #202020;
+    padding: 15px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+} 
+.bookings_button:hover{
+    background-color: #202020;
+    color: #ffffff;
+}
+
+.venues {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+  
+.vcard {
+    width: 90%;
+    background-color: rgba(255,255,255,0.13);
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 25px rgba(8,7,16,0.6);
+    padding: 25px;
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.vcard h1 {
+	margin-top: 0;
+    width: 100%;
+}
+
+.vcard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+  
+.card {
+    width: 25%;
+    background-color: rgba(255,255,255,0.13);
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 25px rgba(8,7,16,0.6);
+    padding: 40px;
+    margin: 20px;
+}
+
+.card h2 {
+	margin-top: 0;
+}
+
+.card p {
+	margin-bottom: 0;
+}
+
+.add-show-img {
+    width: 150px;
+    margin: auto;
+}
+
+.showadd_button {
+    border: none;
+    background: none;
+}
+
+.showadd_button:focus {
+    outline: none;
+} 
+
+.showadd_button:hover{
+    transition: transform .5s ease-in-out;
+    transform: scale(1.2) rotate(90deg);
+}
+
+.add-venue-img {
+    width: 150px;
+    margin: auto;
+}
+
+.venueadd_button {
+    border: none;
+    background: none;
+}
+
+.venueadd_button:focus {
+    outline: none;
+} 
+
+.venueadd_button:hover{
+    transition: transform .5s ease-in-out;
+    transform: scale(1.2) rotate(90deg);
+}
+
+.vvcard {
+    width: 200px;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.inpform{
+    width: 20%;
+    margin-left: 20px;
+}
+
+.searchbut{
+    color: #202020;
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.searchbut:hover {
+    color: #ffffff;
+    background-color: #202020;
+    border-color: #ffffff;
+}
+
+.usr a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.usericon{
+    width : 30%; 
+    background-color: rgba(255, 255, 255, 0.7); 
+    margin-top: 10px; 
+    border-radius:15px; 
+    padding: 5px;
+}
+
+.profilecont{
+    width : 40%; 
+    background-color: rgba(255, 255, 255, 0.7); 
+    margin-top: 10px; 
+    border-radius:15px; 
+    padding: 5px;
+}

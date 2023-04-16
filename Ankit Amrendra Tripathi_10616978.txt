@@ -1,0 +1,38 @@
+Student Name - Ankit Amrendra Tripahi (10616978)
+
+Contribution :
+
+1.Worked on creating Architecture and business test cases for ticket managment systems.
+
+2.Worked on research creation of github repo ,flask , visual studio code , SQLlite studio and Integration part.
+
+3.Worked on below functionalities on backend code as well front end html files :
+
+a.user model.
+b.login and registration forms for user and admin. Added form for creatings venues, shows and ticket booking.
+c.User dashboard route & user dashboard functionalities with view.
+d.Views for profile, rating, registeration, summary and ticket booking. 
+e.Update show and venue functionality. Added summary page route with functionality.
+f.changes in app.py (Troubleshooting).
+g.Worked on JS and CSS file.
+h.Worked on creation of dummy venue, movies and user creates (QA for end to end flow).
+
+issues faced during group assignment :
+1.Integration of github repo with Visual studio code and SQLlite studio.
+2.Issue related to code sync and merging the code while pulling the code in group.
+3.db connectvity issue.
+
+Below are some commands used during assignment.
+Pre requesite is one should go to the root folder first , open the command propmt and the run the commands. In my case my root folder is C:\Users\ankit\Documents\Python Assignment\ticketmanagmentsystem
+
+1. Git config command - When you install Git, it is important to set up your git username and email address as the first step. This allows Git to link your identity with each commit you create, as Git is a distributed version control system widely utilized by software teams.
+$ git config --global user.email "10616978@mydbs.ie"
+$ git config --global user.name "ankit2392"
+
+2. to install dependencies
+pip install -r requirements.txt
+
+3. to run app 
+python app.py
+
+
