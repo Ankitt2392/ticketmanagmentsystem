@@ -1,0 +1,27 @@
+Our project is on the movie ticket managemnt system. A user can login after registering in the website, search for a specific movie and a theater. Also tickets can be booked on a per seat basis.
+My contributions include adding below functionalities to the code.
+
+Welcome view
+Show booking and rating model
+Services for user registration, user login and admin login
+User booking , new show and new venue route with functionality
+Views for update show, update venue, user bookings and user dashboard
+Delete user, logout functionality
+User booking , new show and new venue route with functionality. 
+Added views for booking page, new show page and venue page .
+
+
+Created and pushed below web pages:
+
+update_show.html
+update_venue.html
+user_bookings.html
+user_dashboard.html
+
+Issue faced:
+
+I was unable to pull and save the .py file due to following error ; "Failed to save .py file": The content of the file is newer. Please compare your version with the file contents or overwrite the content of the file with your changes.
+
+Resolution - Closed the visual studio code application , logged out from git. logged in again to git and opened the application and did a pull, and then saved the file.
+
+
