@@ -1,7 +1,7 @@
 Public git repo link:
 https://github.com/Ankitt2392/ticketmanagmentsystem
 
-# ticketshow_mad1
+# ticketshow
 A show ticket booking application made from python and flask.
 
 # Student details ------------------
